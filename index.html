@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Production Clock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .clock-wrapper {
+      display: flex;
+      align-items: center;
+      user-select: none;
+    }
+
+    .clock-time {
+      font-family: 'Roboto', sans-serif;
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="clock-wrapper">
+    <div class="clock-time" id="clock">00:00:00</div>
+  </div>
+
+  <script>
+    function pad(n) {
+      return String(n).padStart(2, '0');
+    }
+
+    function updateClock() {
+      var now = new Date();
+      var thai = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Bangkok' }));
+
+      var h = pad(thai.getHours());
+      var m = pad(thai.getMinutes());
+      var s = pad(thai.getSeconds());
+
+      document.getElementById('clock').textContent = h + ':' + m + ':' + s;
+    }
+
+    updateClock();
+
+    // ซิงค์ให้ตรงกับต้นวินาที
+    var now = new Date();
+    var delay = 1000 - now.getMilliseconds();
+    setTimeout(function() {
+      updateClock();
+      setInterval(updateClock, 1000);
+    }, delay);
+  </script>
+</body>
+</html>
